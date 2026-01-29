@@ -54,6 +54,15 @@ Each dataset is preprocessed using a unified pipeline with imputation, scaling, 
 8. Save final model bundles and metrics  
 
 ---
+## How to Run
+
+pip install -r requirements.txt
+
+Run notebooks sequentially from:
+
+00_project_overview.ipynb  
+to  
+11_final_model_bundle.ipynb
 
 ## Outcome
 
