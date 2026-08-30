@@ -16,6 +16,7 @@ SHAP — wrapped in a proper interactive Streamlit application.
 ## Table of Contents
 - [Overview](#overview)
 - [Why Three Separate Models](#why-three-separate-models)
+- [Notebooks](#notebooks)
 - [Live App Features](#live-app-features)
 - [Datasets](#datasets)
 - [Pipeline & Architecture](#pipeline--architecture)
@@ -66,6 +67,32 @@ explored stacking ensembles and calibration comparisons per dataset, but
 never merges the three schemas into one model — the datasets don't share
 enough structure for that to make sense (you can't infer ECG findings from
 a survey answer). Each is modeled and evaluated on its own terms instead.
+
+## Notebooks
+
+The research pipeline behind the app, in order:
+
+| Notebook | Contents |
+|---|---|
+| `00_project_overview.ipynb` | Project goals and scope |
+| `01_data_preprocessing.ipynb` | Loading and cleaning all three datasets |
+| `02_baseline_models.ipynb` | Logistic Regression + Random Forest baselines |
+| `03_advanced_models.ipynb` | XGBoost, LightGBM, and a Stacking ensemble |
+| `04_class_imbalance_handling.ipynb` | SMOTE and class-imbalance experiments |
+| `05_model_tuning.ipynb` | Hyperparameter search (`RandomizedSearchCV`) |
+| `06_explainability_calibration.ipynb` | Final LightGBM pipelines, SHAP, calibration |
+| `07_robustness_testing.ipynb` | Bundle export + prediction demos |
+| `08_cross_dataset_evaluation.ipynb` | Per-dataset stacking, calibration, SHAP dependence/PDP plots |
+| `09_threshold_optimization.ipynb` | F1-maximizing threshold selection |
+| `10_final_evaluation.ipynb` | Final metrics summary across all three datasets |
+| `11_final_model_bundle.ipynb` | Bundle export + an early prototype UI |
+
+A note on naming: `07` and `08` are titled "robustness testing" and
+"cross-dataset evaluation," but neither notebook actually does what its name
+implies — `07` contains no noise-injection or feature-ablation testing, and
+`08` never trains on one dataset and evaluates on another. Flagging this here
+rather than let the filenames imply capabilities that aren't backed by what's
+actually in them.
 
 ## Live App Features
 
@@ -160,20 +187,27 @@ are available in the app's **Model Performance** tab.
 ## Project Structure
 
 ```
-heartriskx_streamlit_app/
-├── app.py                 # Streamlit application (5 tabs, 3 dataset selector)
-├── train_models.py        # Preprocessing + training + bundling pipeline
+HeartRiskX/
+├── 00_project_overview.ipynb          # Research notebooks (see Notebooks section)
+├── 01_data_preprocessing.ipynb
+├── ...
+├── 11_final_model_bundle.ipynb
+├── app.py                             # Streamlit application (5 tabs, 3 dataset selector)
+├── train_models.py                    # Preprocessing + training + bundling pipeline
 ├── requirements.txt
-├── data/                  # Raw datasets
+├── data/                              # Raw datasets (shared by notebooks and app)
 │   ├── heart_2020_clean.csv
 │   ├── cardio_train.csv
 │   └── uci_cleveland_clean.csv
-├── models/                # Generated bundles (pipeline + threshold + metrics)
+├── models/                            # Generated bundles (pipeline + threshold + metrics)
 │   ├── heart2020_bundle.joblib
 │   ├── cardio_bundle.joblib
 │   └── uci_bundle.joblib
 └── README.md
 ```
+
+Everything lives at the repo root — `app.py` and `train_models.py` are not
+in a subfolder, so the commands below work directly from a fresh clone.
 
 ## Getting Started
 
@@ -225,7 +259,7 @@ as a coarse screening signal, not a diagnosis.
 ## Author
 
 **Writick Parui**
-M.Tech CSE @ Thapar Institute of Engineering & Technology
+M.E CSE @ Thapar Institute of Engineering & Technology
 GATE 2025 | Former TCS Intern
 GitHub: [github.com/writickp3-ctrl](https://github.com/writickp3-ctrl)
 
